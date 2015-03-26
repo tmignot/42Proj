@@ -1,5 +1,5 @@
-#ifndef COMPONENT_CLASS_HPP
-#define COMPONENT_CLASS_HPP
+#ifndef COMPONENT_HPP
+#define COMPONENT_HPP
 
 #include <map>
 

@@ -1,5 +1,5 @@
-#ifndef ENTITY_CLASS_HPP
-#define ENTITY_CLASS_HPP
+#ifndef ENTITY_HPP
+#define ENTITY_HPP
 
 class Entity {
 	public :
