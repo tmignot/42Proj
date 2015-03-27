@@ -1,0 +1,29 @@
+#ifndef COMPONENT_LIST_H
+#define COMPONENT_LIST_H
+
+enum ComponentList_e {
+
+	/* Attributes components */
+	HAS_NAME,
+	HAS_PARENT,
+	HAS_CHILDREN,
+	HAS_BOUNDING_BOX,
+	HAS_BOUNDING_SPHERE,
+	HAS_3D_ASSETS,
+	HAS_3D_KEYFRAMES,
+	HAS_2D_ASSETS,
+	HAS_2D_KEYFRAMES,
+	HAS_TRANSFORM_MATRIX,
+	HAS_CAMERA,
+	HAS_TEXT,
+
+	/* reactive components */
+	REACTS_TO_PHYSIC,
+	REACTS_TO_COLLISIONS,
+	REACTS_TO_INPUT,
+	REACTS_TO_EVENT,
+	
+	/* */
+};
+
+#endif
