@@ -1,0 +1,14 @@
+Entity -> (parent, components)
+  unsigned int      ID
+  unsigned int      parent
+  unsigned int*     children
+  std::vector<bool> components
+
+Component : std::map<unsigned int, cData>
+
+System ->
+  std::bitset                         componentsDependencies
+  std::map<unsigned int, std::bitset> states
+  std::map<eventID, callback>         events
+
+Event -> 
