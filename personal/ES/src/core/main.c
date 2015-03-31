@@ -42,8 +42,10 @@ int	launch(void) {
 }
 
 void	stop(void) {
+	int x = 0;
 	pthread_mutex_lock(&lock);
 	running(2);
 	pthread_mutex_unlock(&lock);
 	pthread_join(threadID, NULL);
+	x++;
 }
