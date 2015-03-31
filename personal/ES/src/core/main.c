@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "test.h"
+#include "core/test.h"
 
 pthread_t				threadID;
 pthread_mutex_t lock;
