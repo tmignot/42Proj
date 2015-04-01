@@ -25,7 +25,7 @@ void*	loop(void* arg) {
 			if (!r)
 				run = 0;
 			else
-				printf("%d toto is back\n", count++);
+				write(2, "toto is back\n", strlen("toto is back\n"));
 			sleep(1);
 		}
 	}
