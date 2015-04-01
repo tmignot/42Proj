@@ -1,0 +1,53 @@
+<% vars = ['class_name: The name of the cpp class you want to build',
+					 'parent: The name of a class it will inherit from',
+					 'dc: [pub,pri,pro] default constructor visibility',
+					 'cc: [pub,pri,pro] copy constructor visibility',
+					 'ac: [pub,pri,pro] assign constructor visibility']%>
+<% if @list_vars %>
+	<% vars.each {|v| puts v} %>
+<% else %>
+#ifndef  <%= "#{@class_name.upcase}_HPP" %>
+#define  <%= "#{@class_name.upcase}_HPP" %>
+
+class <%= @class_name %>
+{
+
+	private:
+	<% if @dc == 'pri' %>
+		<%= "#{@class_name}(void);"%>
+	<% end %>
+	<% if @cc == 'pri' %>
+		<%= "#{@class_name}(#{@class_name} const& src);"%>
+	<% end %>
+	<% if @ac == 'pri' %>
+		<%= "#{@class_name}&	operator=(#{@class_name} const&);"%>
+	<% end %>
+
+	protected:
+	<% if @dc == 'pro' %>
+		<%= "#{@class_name}(void);"%>
+	<% end %>
+	<% if @cc == 'pro' %>
+		<%= "#{@class_name}(#{@class_name} const& src);"%>
+	<% end %>
+	<% if @ac == 'pro' %>
+		<%= "#{@class_name}&	operator=(#{@class_name} const&);"%>
+	<% end %>
+
+	public:
+	<% if @dc == 'pub' %>
+		<%= "#{@class_name}(void);"%>
+	<% end %>
+	<% if @cc == 'pub' %>
+		<%= "#{@class_name}(#{@class_name} const& src);"%>
+	<% end %>
+	<% if @ac == 'pub' %>
+		<%= "#{@class_name}&	operator=(#{@class_name} const&);"%>
+	<% end %>
+
+		virtual ~<%=@class_name%>(void);
+};
+
+
+#endif    <%="/* #{@class_name.upcase}_HPP */" %>
+<% end %>
