@@ -1,0 +1,28 @@
+<% vars = [
+'class_name: The name of the cpp class you want to build',
+'parent: The name of a class it will inherit from',
+'vd: Is the destructor virtual?'] %>
+<%if @list_vars %>
+<%	vars.each {|v| puts v} %>
+<%else%>
+<%	default_const_string = "%s::%s(void)" % [@class_name, @class_name] %>
+<%	copy_const_string = "%s::%s(%s const& rhs)" % [@class_name, @class_name, @class_name] %>
+<%	unless @parent.nil? %>
+<%		default_const_string << " : #{@parent}()" %>
+<%		copy_const_string << " : #{@parent}()" %>
+<%	end %>
+<%	default_const_string << " {}" %>
+<%	copy_const_string << " {" %>
+#include  "<%= "#{@class_name}.hpp" %>"
+
+<%= default_const_string %>
+
+<%= "#{copy_const_string}" %>
+<%=	"	*this = rhs;" %>
+<%= "}" %>
+
+<%= "#{@class_name}&	operator=(#{@class_name} const&){"%>
+<%= "}" %>
+
+<%="virtual " unless @vd.nil?%>~<%=@class_name%>::<%=@class_name%>(void) {}
+<% end %>

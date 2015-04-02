@@ -1,0 +1,10 @@
+{
+	"class_name":"Cat",
+	"attr":[
+	[ "public", "int*", "var1" ],
+	[ "public", "int*", "var1" ],
+	[ "public", "int*", "var1" ]
+		],
+	"parent":"SuperClass",
+	"vd":true
+}
