@@ -1,7 +1,9 @@
 #include <pthread.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "core/test.h"
+#include "core/Entity.hpp"
 
 pthread_t				threadID;
 pthread_mutex_t lock;
@@ -38,6 +40,7 @@ int	launch(void) {
 		return 1;
 
 	pthread_create(&threadID, NULL, &loop, NULL);	
+	printf("%d %d", (new NG::Entity())->ID, (new NG::Entity())->ID);
 	return 0;
 }
 
