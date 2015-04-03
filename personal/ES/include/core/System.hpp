@@ -37,10 +37,8 @@ namespace NG {
 
 				Channel		Input;
 				
-				System();
-				virtual ~System();
-
-				void	SendEvent(unsigned int, U);
+				System() {}
+				virtual ~System() {}
 		};
 }
 
