@@ -1,9 +1,12 @@
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 
+#include <cassert>
 #include <mutex>
 #include <bitset>
+#include <vector>
 #include <map>
+#include <algorithm>
 
 #ifndef N_COMPONENT
 #define N_COMPONENT 0
@@ -21,7 +24,7 @@ namespace NG {
 
 		protected :
 
-			static unsigned int				Count(0);
+			static unsigned int				Count;
 
 			AComponent();
 			virtual ~AComponent();
@@ -47,32 +50,35 @@ namespace NG {
 
 			public :
 				
-				class DataType : private std::pair<std::mutex,T> {
+				class DataType {
 					
+					T						Data;
+					std::mutex	Mutex;
+
 					public :
 
-						DataType() : std::pair() {}
+						DataType() {}
 						~DataType() {}
 
-						Set(T data) {
-							first.lock();
-							second = data;
-							first.unlock();
+						void Set(T data) {
+							Mutex.lock();
+							Data = data;
+							Mutex.unlock();
 						}
 
 						T Get(void) {
 							T data;
-							first.lock();
-							data = second;
-							first.unlock();
+							Mutex.lock();
+							data = Data;
+							Mutex.unlock();
 							return data;
 						}
 				};
 
-				std::map<unsigned int,DataType<T> >	Data;
+				std::map<unsigned int,DataType>	Data;
 
 				Component()	
-					: AComponent(), ID(Count++)
+					: AComponent()
 				{
 					T t;
 					ComponentData* d = dynamic_cast<ComponentData*>(&t);
@@ -84,14 +90,13 @@ namespace NG {
 
 				~Component() { 
 					Data.clear();
+					Components.erase(std::find(Components, this));
 				}
 
 				void	Set(unsigned int key, T data) {
 					Data[key].Set(data);
 				}
 		};
-
-	extern void	DeleteComponents(void);
 }
 
 #endif

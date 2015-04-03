@@ -1,6 +1,6 @@
 OS=				$(shell uname)
 CC=				g++
-OBJ_CFLAGS=		-fPIC -lstdc++
+OBJ_CFLAGS=		-fPIC -std=c++11 -lstdc++
 MODULE_NAME=	threadlaunch
 SRC_DIR=		src
 OBJ_DIR=		obj
