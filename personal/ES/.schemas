@@ -1,4 +1,5 @@
 https://github.com/Shervanator/Engine
+http://gizma.com/easing/#l
 
 Entity -> (parent, components)
   unsigned int      ID
