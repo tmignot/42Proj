@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/20 16:08:33 by tmignot           #+#    #+#             */
+/*   Updated: 2013/11/25 10:41:31 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 256
+char	*ft_strnew(size_t size)
+{
+	void	*m;
+	size_t	i;
 
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	m = (char *)malloc(size + 1);
+	if (m)
+	{
+		i = 0;
+		while (i < size + 1)
+			((char *)m)[i++] = 0;
+		return (m);
+	}
+	return (NULL);
+}

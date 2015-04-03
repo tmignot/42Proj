@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_listdel.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/21 04:26:22 by tmignot           #+#    #+#             */
+/*   Updated: 2013/11/23 11:34:26 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 256
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+{
+	t_list	*elem;
+	t_list	*tmp;
 
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	elem = *alst;
+	while (elem)
+	{
+		tmp = elem->next;
+		(*del)(elem->content, elem->content_size);
+		free(elem);
+		elem = tmp;
+	}
+	*alst = NULL;
+}

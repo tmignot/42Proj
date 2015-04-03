@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_xisalnum.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/25 15:34:21 by tmignot           #+#    #+#             */
+/*   Updated: 2014/04/19 00:25:31 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 256
-
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+int		ft_xisalnum(int c)
+{
+	if (c)
+		return ((c <= 'z' && c >= 'a')
+		|| (c <= 'Z' && c >= 'A')
+		|| (c <= '9' && c >= '0'));
+	return (0);
+}

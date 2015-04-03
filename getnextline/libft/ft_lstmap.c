@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/23 11:29:57 by tmignot           #+#    #+#             */
+/*   Updated: 2013/11/23 22:20:13 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 256
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+{
+	t_list	*ret;
+	t_list	*tmp;
 
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	if (lst)
+	{
+		ret = (*f)(ft_lstnew(lst->content, lst->content_size));
+		tmp = ret;
+		while (lst->next)
+		{
+			lst = lst->next;
+			tmp->next = (*f)(ft_lstnew(lst->content, lst->content_size));
+			tmp = tmp->next;
+		}
+		return (ret);
+	}
+	return (NULL);
+}

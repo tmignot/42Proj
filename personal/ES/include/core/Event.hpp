@@ -1,6 +1,8 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
+#include <cassert>
+
 namespace NG {
 
 	class AEvent {

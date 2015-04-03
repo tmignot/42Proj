@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_strichr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2014/04/19 02:30:08 by tmignot           #+#    #+#             */
+/*   Updated: 2014/04/19 02:32:15 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+int		ft_strichr(char *str, int l)
+{
+	char	c;
+	int		i;
 
-# define BUFF_SIZE 256
-
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	i = 0;
+	c = (char)l;
+	while (str[i] != c)
+	{
+		if (str[i] == '\0' && c != '\0')
+			return (-1);
+		i++;
+	}
+	return (i);
+}

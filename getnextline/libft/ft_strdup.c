@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/19 14:34:19 by tmignot           #+#    #+#             */
+/*   Updated: 2013/11/26 03:59:26 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdlib.h>
 
-# define BUFF_SIZE 256
+char	*ft_strdup(const char *s1)
+{
+	char	*s2;
+	size_t	i;
 
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	i = 0;
+	while (s1[i])
+		i++;
+	s2 = (char *)malloc(sizeof(char) * i + 1);
+	while (i)
+	{
+		s2[i] = s1[i];
+		i--;
+	}
+	s2[i] = s1[i];
+	return (s2);
+}

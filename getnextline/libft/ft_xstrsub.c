@@ -1,23 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hotrace.h                                          :+:      :+:    :+:   */
+/*   ft_xstrsub.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmignot <tmignot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 15:35:44 by tmignot           #+#    #+#             */
-/*   Updated: 2015/04/03 06:49:29 by tmignot          ###   ########.fr       */
+/*   Created: 2013/11/25 21:21:25 by tmignot           #+#    #+#             */
+/*   Updated: 2014/04/19 00:29:03 by tmignot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdlib.h>
 
-# define BUFF_SIZE 256
+char	*ft_xstrsub(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	char	*ret;
 
-# include <unistd.h>
-# include "libft.h"
-
-int		get_next_line(int fd, char **line);
-
-#endif
+	if (s && len)
+	{
+		ret = (char *)malloc(len);
+		if (ret)
+		{
+			i = 0;
+			j = 0;
+			while (i < start)
+				i++;
+			while (j < len)
+			{
+				ret[j] = s[i];
+				j++;
+				i++;
+			}
+			ret[j] = 0;
+		}
+		return (ret);
+	}
+	return (NULL);
+}

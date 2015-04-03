@@ -2,6 +2,7 @@
 #define CHANNEL_HPP
 
 #include <list>
+#include <mutex>
 
 namespace NG {
 
@@ -14,22 +15,22 @@ namespace NG {
 
 			public :
 
-				Channel(void) : std::list() {};
+				Channel(void) : std::list<T*>() {};
 
 				~Channel(void) {
 					Mutex.lock();
-					while (!empty()) {
-						delete front();
-						pop_front();
+					while (!this->empty()) {
+						delete this->front();
+						this->pop_front();
 					}
-					clear();
+					this->clear();
 				}
 
-				T*			Poll(void) {
+				T*	Poll(void) {
 					if (Mutex.try_lock()) {
-						if (size > 0) {
-							T* val = front();
-							pop_front();
+						if (this->size > 0) {
+							T* val = this->front();
+							this->pop_front();
 							return val;
 						}
 						Mutex.unlock();
@@ -37,10 +38,12 @@ namespace NG {
 					return NULL;
 				}
 
-				void		Peep(T* elem) {
+				void	Peep(T* elem) {
 					Mutex.lock();
-					push_back(elem);
+					this->push_back(elem);
 					Mutex.unlock();
 				}
 		};
 }
+
+#endif

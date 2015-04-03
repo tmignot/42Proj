@@ -1,7 +1,7 @@
 #ifndef  ENTITY_HPP
 #define  ENTITY_HPP
 
-#include "core/Components.hpp"
+#include "core/Component.hpp"
 
 namespace NG {
 
