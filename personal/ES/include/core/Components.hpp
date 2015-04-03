@@ -49,30 +49,30 @@ namespace NG {
 		class Component : public AComponent {
 
 			public :
-				
+
 				class DataType {
-					
+
 					T						Data;
 					std::mutex	Mutex;
 
 					public :
 
-						DataType() {}
-						~DataType() {}
+					DataType() {}
+					~DataType() {}
 
-						void Set(T data) {
-							Mutex.lock();
-							Data = data;
-							Mutex.unlock();
-						}
+					void Set(T data) {
+						Mutex.lock();
+						Data = data;
+						Mutex.unlock();
+					}
 
-						T Get(void) {
-							T data;
-							Mutex.lock();
-							data = Data;
-							Mutex.unlock();
-							return data;
-						}
+					T Get(void) {
+						T data;
+						Mutex.lock();
+						data = Data;
+						Mutex.unlock();
+						return data;
+					}
 				};
 
 				std::map<unsigned int,DataType>	Data;
