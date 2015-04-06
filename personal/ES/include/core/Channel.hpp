@@ -3,11 +3,12 @@
 
 #include <list>
 #include <mutex>
+#include <condition_variable>
 
 namespace NG {
 
 	template<class T>
-		class Channel : private std::list<T*> {
+		class BaseChannel : private std::list<T*> {
 
 			private :
 
@@ -15,9 +16,12 @@ namespace NG {
 
 			public :
 
-				Channel(void) : std::list<T*>() {};
+				std::mutex							InputMutex;
+				std::condition_variable	Condition;
 
-				~Channel(void) {
+				BaseChannel(void) : std::list<T*>() {};
+
+				~BaseChannel(void) {
 					Mutex.lock();
 					while (!this->empty()) {
 						delete this->front();
@@ -27,21 +31,25 @@ namespace NG {
 				}
 
 				T*	Poll(void) {
-					if (Mutex.try_lock()) {
-						if (this->size > 0) {
-							T* val = this->front();
-							this->pop_front();
-							return val;
-						}
-						Mutex.unlock();
+					T* val = NULL;
+
+					Mutex.lock();
+					if (this->size > 0) {
+						val = this->front();
+						this->pop_front();
 					}
-					return NULL;
+					Mutex.unlock();
+
+					return val;
 				}
 
 				void	Peep(T* elem) {
 					Mutex.lock();
 					this->push_back(elem);
 					Mutex.unlock();
+
+					std::unique_lock<std::mutex>	lock(InputMutex);
+					Condition.notify_one();
 				}
 		};
 }

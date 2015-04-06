@@ -2,6 +2,9 @@
 #define EVENT_HPP
 
 #include <cassert>
+#ifndef NULL
+#define NULL 0
+#endif
 
 namespace NG {
 
@@ -27,11 +30,11 @@ namespace NG {
 	};
 
 	template<class T>
-		class Event : public AEvent {
+		class BaseEvent : public AEvent {
 
 			public :
 
-				Event(unsigned int type, unsigned int emitterID)
+				BaseEvent(unsigned int type, unsigned int emitterID)
 					: AEvent(type, emitterID)
 				{
 					EventData* d = dynamic_cast<EventData*>(&Data);
@@ -39,7 +42,7 @@ namespace NG {
 					d = NULL;
 				}
 
-				~Event() {}
+				~BaseEvent() {}
 
 				T Data;
 		};
