@@ -32,14 +32,19 @@ namespace NG {
 
 	class ComponentData {
 
-		public :
-
-			bool				Active;
-
 		protected :
 
-			ComponentData(bool);
+			int					State;
+			std::mutex	Mutex;
+
+		public :
+
+			ComponentData();
 			virtual ~ComponentData();
+
+			int					GetState();
+			void				SetState(int);
+
 	};
 
 
@@ -53,24 +58,23 @@ namespace NG {
 				class DataType {
 
 					T						Data;
-					std::mutex	Mutex;
 
 					public :
 
 					DataType() {}
 					~DataType() {}
 
-					void Set(T data) {
-						Mutex.lock();
+					void SetData(T data) {
+						this->Mutex.lock();
 						Data = data;
-						Mutex.unlock();
+						this->Mutex.unlock();
 					}
 
-					T Get(void) {
+					T GetData(void) {
 						T data;
-						Mutex.lock();
+						this->Mutex.lock();
 						data = Data;
-						Mutex.unlock();
+						this->Mutex.unlock();
 						return data;
 					}
 				};
@@ -93,8 +97,14 @@ namespace NG {
 					Components.erase(std::find(Components, this));
 				}
 
-				void	Set(unsigned int key, T data) {
-					Data[key].Set(data);
+				T	operator[](unsigned int key) {
+					typename std::map<unsigned int,DataType>::iterator it;
+					it = Data.find(key);
+					if (it != Data.end())
+						return it->second.GetData();
+					T ret;
+					ret.SetState(-1);
+					return ret;	
 				}
 		};
 }
