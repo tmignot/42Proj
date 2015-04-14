@@ -1,7 +1,7 @@
 OS=				$(shell uname)
 CC=				g++
 OBJ_CFLAGS=		-fPIC -std=c++11
-MODULE_NAME=	threadlaunch
+MODULE_NAME=	ng
 SRC_DIR=		src
 OBJ_DIR=		obj
 SRC=			$(wildcard $(SRC_DIR)/*/*.cpp)
@@ -49,7 +49,7 @@ lib: objects $(LIB_DIR)/$(LIB_NAME)
 
 
 $(SRC_DIR)/%_wrap.cpp: $(WRAPPERS_DIR)/%.i Makefile $(IFILES)
-	swig  -ruby -c++ -o $@ $<
+	swig  -ruby -c++ $(addprefix -I,$(IDIR_LOCAL)) -o $@ $<
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp Makefile $(IFILES)
 	$(CC) -o $@ -c $< $(OBJ_CFLAGS) $(addprefix -I,$(IDIR_LOCAL) $(IDIR_EXTERNAL))

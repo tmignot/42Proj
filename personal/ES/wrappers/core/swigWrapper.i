@@ -1,8 +1,12 @@
-%module threadlaunch
+%module ng
 %{
-  extern int launch(void);
-  extern void stop(void);
+#include "core/ComponentMask.hpp"
+#include "core/Component.hpp"
+#include "core/Entity.hpp"
 %}
 
-extern int launch(void);
-extern void stop(void);
+%include "std_string.i"
+
+%include "core/ComponentMask.hpp"
+%include "core/Component.hpp"
+%include "core/Entity.hpp"

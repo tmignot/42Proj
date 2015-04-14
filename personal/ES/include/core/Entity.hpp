@@ -1,7 +1,10 @@
 #ifndef  ENTITY_HPP
 #define  ENTITY_HPP
 
-#include "core/Component.hpp"
+#include <array>
+#include <vector>
+
+#include "core/ComponentMask.hpp"
 
 namespace NG {
 
@@ -14,10 +17,14 @@ namespace NG {
 		public :
 
 			unsigned int		ID;
-			ComponentMask		components;
+			Entity*					Ptr;
+			ComponentMask		Mask;
 
 			Entity();
 			~Entity();
 	};
+
+	extern std::vector<Entity*> Entities;
+
 }
 #endif    /* ENTITY_HPP */

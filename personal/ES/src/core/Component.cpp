@@ -1,11 +1,15 @@
 #include "core/Component.hpp"
 
-std::vector<NG::AComponent*> NG::Components;
+namespace NG {
 
-unsigned int NG::AComponent::Count(0);
+	std::vector<AComponent*> Components;
 
-NG::AComponent::AComponent() : ID(Count++) {}
-NG::AComponent::~AComponent() {}
+	unsigned int AComponent::Count(0);
 
-NG::ComponentData::ComponentData(bool active) : Active(active) {}
-NG::ComponentData::~ComponentData() {}
+	AComponent::AComponent() : ID(Count++) {}
+	AComponent::~AComponent() {}
+
+	ComponentData::ComponentData() : State(0) {}
+	ComponentData::~ComponentData() {}
+
+}
