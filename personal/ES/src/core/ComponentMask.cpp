@@ -42,6 +42,13 @@ namespace NG {
 		return true;
 	}
 
+	bool& ComponentMask::operator[](unsigned int index) {
+		return BoolArray::operator[](index);
+	}
+
+	bool ComponentMask::operator[](unsigned int index) const {
+		return BoolArray::operator[](index);
+	}
 	std::string	ComponentMask::ToString(void) const
 	{
 		std::ostringstream o;

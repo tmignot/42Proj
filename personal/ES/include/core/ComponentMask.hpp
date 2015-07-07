@@ -8,12 +8,12 @@
 #define N_COMPONENT 10
 #endif
 
-
 namespace NG {
 
-	typedef std::array<bool,N_COMPONENT> BitArray;
 
-	class ComponentMask : public BitArray {
+	typedef std::array<bool,N_COMPONENT> BoolArray;
+
+	class ComponentMask : public BoolArray {
 
 		public :
 
@@ -23,10 +23,13 @@ namespace NG {
 			ComponentMask operator&(ComponentMask const & rhs) const;
 			ComponentMask operator|(ComponentMask const & rhs) const;
 			ComponentMask operator^(ComponentMask const & rhs) const;
+			bool&					operator[](unsigned int i);
+			bool					operator[](unsigned int i) const;
 			bool					operator==(ComponentMask const & rhs) const;
 			std::string		ToString(void) const;
 	};
 
 }
+
 
 #endif

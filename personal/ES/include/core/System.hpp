@@ -4,6 +4,7 @@
 #include "core/Component.hpp"
 #include "core/Channel.hpp"
 #include "core/Event.hpp"
+#include "core/EventCondition.hpp"
 #include "core/Timer.hpp"
 #include <thread>
 
@@ -11,136 +12,99 @@ namespace NG {
 
 	class ASystem {
 
-		public :
+		private :
 
-			unsigned int		ID;
+			bool					Run;
+			bool					Paused;
+			unsigned int	Fps;
+			Timer					TimeController;
+
+			std::thread							*Thread;
+			std::mutex							Mutex;
+			std::mutex							LockMutex;
+			std::condition_variable	Condition;
+
+			void	Loop(void);
+			void	Sleep();
 
 		protected :
 
 			static unsigned int	Count;
 
-			ComponentMask									RequiredComponents;
-			std::vector<unsigned int>			Entities;
-			std::map<unsigned int, std::vector<unsigned int>> BoundEvents; 
+			std::vector<unsigned int>														Watched;
+			std::map<unsigned int,std::vector<EventCondition*> >	Listeners;
 
-			ASystem(ComponentMask);
+			ASystem(unsigned int fps);
 			virtual ~ASystem();
 
-			bool	RegisterEntity(unsigned int);
-			void	BindEvent(unsigned int entity, 
-											unsigned int type);
+			virtual void OnInit() = 0;
+			virtual void OnUpdate() = 0;
+			virtual void OnPause() = 0;
+			virtual void OnResume() = 0;
+			virtual void OnStop() = 0;
 
+			void StateChanged(unsigned int);
+
+
+		public :
+
+			unsigned int		id;
+
+			void Pause();
+			void Resume();
+
+			void Watch(unsigned int component);
+			void Ignore(unsigned int component);
+
+			void AddListener(EventCondition* condition);
+			void RemoveListener(EventCondition* condition);
+
+			virtual int	 GetState(std::vector<unsigned int>) = 0;
 	};
 
-	template<class T>
+	/*
 		class System : public ASystem {
 
 			public :
 
-				typedef BaseEvent<T>				Event;
-				typedef BaseChannel<Event>	Channel;
+				System(unsigned int fps) : ASystem(fps) {}
+				virtual ~System() {}
 
-			private :
-
-				bool					Run;
-				bool					Paused;
-				unsigned int	Fps;
-				Timer					TimeController;
-				Channel				InputChannel;
-				
-				std::thread							Thread;
-				std::mutex							Mutex;
-				std::mutex							LockMutex;
-				std::condition_variable	Condition;
-
-			public :
-
-				System(ComponentMask requirements, unsigned int fps) 
-					: ASystem(requirements),
-						Run(true),
-						Paused(false),
-						Fps(fps),
-						TimeController(Fps),
-						Thread(Loop)
-				{
-					TimeController.Start();
+				int GetState(std::vector<unsigned int> components) {
+					if (components.size() == 2) {
+						if (collides[components[1]].contains(components[2])
+								|| collides[components[2]].contains(components[1]))
+							return 1;
+					}
+					return 0;
 				}
 
-				virtual ~System() {
-					Mutex.lock();
-					Run = false;
-					Mutex.unlock();
-					Thread.join();
-				}
-
-				void		Loop() {
-					OnInit();
-
-					T *input;
-					bool run, paused;
-					run = paused = true;
-					while (run) {
-						if (Mutex.try_lock()) {
-							run = Run;
-							paused = Pause;
-							Mutex.unlock();
-						}
-						if (run) {
-							if (paused) {
-								OnPause();
-								std::unique_lock<std::mutex> lock(LockMutex);
-								Condition.wait(lock);
-								OnResume();
+				void onUpdate() {
+					foreach watched |c1| {
+						foreach watched |c2| {
+							if (c1 != c2) {
+								if (Colliders[c1].collides(Colliders[c2])) {
+									collides[c1].add(c2);
+									collides[c2].add(c1);
+									StateChanged(c1);
+									StateChanged(c2);
+								}
+								else {
+									if (collides[c1].contains(c2)) {
+										collides[c1].remove(c2);
+										StateChanged(c1);
+									}
+									if (collides[c2].contains(c1)) {
+										collides[c2].remove(c1);
+										StateChanged(c2);
+									}
+								}
 							}
-							while ((input = Input.Poll())) {
-								OnInput(input);
-								delete input;
-							}
-							OnUpdate();
-							Sleep();
 						}
 					}
-					OnStop();
 				}
-
-				void		Sleep() {
-					if (Fps) {
-						TimeController.Stop();
-						TimeController.Wait();
-					}						
-					else {
-						std::unique_lock<std::mutex> lock(InputChannel.InputMutex);
-						InputChannel.Condition.wait(lock);
-					}
-				}
-
-				void		Pause() {
-					Mutex.lock();
-					Paused = true;
-					Mutex.unlock();
-				}
-
-				void		Resume() {
-					Mutex.lock();
-					if (Paused) {
-						Paused = false;
-						std::unique_lock<std::mutex> lock(LockMutex);
-						Condition.notify_one();
-					}
-					Mutex.unlock();
-				}
-
-				void		Input(T* input) {
-					InputChannel.Peep(input);
-				}
-
-				virtual void OnInit() = 0;
-				virtual void OnUpdate() = 0;
-				virtual void OnPause() = 0;
-				virtual void OnResume() = 0;
-				virtual void OnStop() = 0;
-				virtual void OnInput(T) = 0;
 		};
+		*/
 }
 
 #endif

@@ -1,0 +1,32 @@
+[collider_system.collision,	player.id, 1,	mojo_tree, 0]
+[input_system.pressed, player.id, 0]
+
+#define collision 0
+
+
+void CollisionEvent(std::vector<int> param) {
+	assert(param.size() == 5);
+	entity1 = Entities[param[1]];
+	collider1 = ColliderComponent.GetData(entity1, param[2]);
+	entity2 = Entities[param[3]];
+	collider2 = ColliderComponent.GetData(entity2, param[4]);
+}
+
+void check_listeners(event, entity) {
+	if (listeners.find(event) != listeners.end()) {
+		if (listeners[event].find(entity) != listeners[event].end()) {
+			std::list<EventListener>& lst = listeners[event][entity];
+			std::list<EventListener>::iterator it;
+			for (it = lst.begin(); it != lst.end(); ++it) {
+				if (Event[event](it->param))
+					it->emit();
+			}
+		}
+	}
+}
+{
+	listeners[event][entity].front()
+	void(*)(std::vector<int>)*	Events
+	Event[collision] = &CollisionEvent
+}
+

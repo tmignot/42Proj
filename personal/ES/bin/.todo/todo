@@ -1,0 +1,77 @@
+#!/usr/local/bin/ruby
+
+require 'json'
+
+@lists = {}
+
+def print_usage
+	puts "todo add <list list_name>|<item [to list_name]>"
+	exit
+end
+
+def add(arg)
+	print_usage if arg.nil?
+	@lists[ARGV.shift] = [] and quit if arg == 'list'
+	item = {description: arg, created_at: Time.now}
+	if ARGV.shift == 'to'
+		list_name = ARGV.shift
+		unless list_name.nil?
+			ask_creation if @lists[list_name].nil?			
+			@lists[list_name].push item
+			"Task added to list #{list_name}"
+		end
+	else
+		@lists["default"].push item
+		puts "Task added to default list"
+	end
+end
+
+def done(arg)
+end
+
+def remove(arg)
+end
+
+
+def handle_argv
+	case arg = ARGV.shift
+		when nil then @lists.each {|k,v|
+				puts k.to_s + ":"
+				v.each {|task| task.each {|key,val| puts "\t#{val}\n"}
+					puts ""
+				}
+			}
+		when 'add' then add ARGV.shift
+		when 'done' then done ARGV.shift
+		when 'remove' then remove ARGV.shift
+		else
+			usage if @lists[arg].nil?
+			puts arg + ":"
+			@lists[arg].each {|task| 
+				task.each {|key,val|
+					puts "\t#{val}"}
+				puts ""
+			}
+	end
+end
+
+def quit
+	File.open(File.dirname(__FILE__) + "/.todo/lists.json", "w+") do |file|
+		file.write @lists.to_json
+	end
+	exit
+end
+
+File.open(File.dirname(__FILE__) + "/.todo/lists.json", "r") do |file|
+	str = file.read
+	if str.length > 2
+		@lists = JSON.parse str
+	else
+		@lists = {default:[]}
+	end
+end
+
+handle_argv
+quit
+
+#vim set ft=ruby

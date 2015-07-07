@@ -1,0 +1,39 @@
+@path = File.dirname(__FILE__) + '/'
+@dependencies = [
+	:gl,
+	:glew,
+	:sdl2,
+	:SDL2_image,
+	:SDL2_ttf
+]
+
+task :default => [:install, :test]
+
+task :install => [:check_dependencies] do
+end
+
+task :check_dependencies do
+	@dependencies.each do |d|
+		print "Is #{d} installed?"
+		if `pkg-config --libs #{d} 2>/dev/null` == ""
+			puts "#{" " * (20 - d.length)}Oh bad, it's not..."
+		else
+			puts "#{" " * (20 - d.length)}Yes it is!"
+		end
+	end
+end
+
+task :test do
+	ARGV.shift
+	test_dir = ARGV.shift
+	test_dir = test_dir ? test_dir : "cucumber/"
+	check_directory test_dir
+	sh "cucumber -q #{@path + test_dir}"
+end
+
+def check_directory dir
+	unless Dir.exist?(@path + dir)
+		puts "Hey, I can't find this directory \"#{dir}\""
+		exit
+	end
+end

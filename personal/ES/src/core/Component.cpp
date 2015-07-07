@@ -1,15 +1,17 @@
-#include "core/Component.hpp"
+#include <map>
+#include "core/AComponent.hpp"
+#include "core/ComponentData.hpp"
 
 namespace NG {
 
-	std::vector<AComponent*> Components;
+	std::map<unsigned int, AComponent*> Components;
 
 	unsigned int AComponent::Count(0);
-
-	AComponent::AComponent() : ID(Count++) {}
+	AComponent::AComponent() : id(Count++) {}
 	AComponent::~AComponent() {}
 
-	ComponentData::ComponentData() : State(0) {}
+	unsigned int ComponentData::Count(0);
+	ComponentData::ComponentData() : id(Count++) {}
 	ComponentData::~ComponentData() {}
 
 }

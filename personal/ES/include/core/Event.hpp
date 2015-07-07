@@ -2,50 +2,37 @@
 #define EVENT_HPP
 
 #include <cassert>
-#ifndef NULL
-#define NULL 0
-#endif
+#include <ruby.h>
+#include <vector>
+
+#include "core/EventCondition.hpp"
+#include "core/System.hpp"
 
 namespace NG {
 
-	class AEvent {
+	class Event {
+
+		private :
+
+			static unsigned int	 Count;
+
+			unsigned int											id;
+			VALUE															Callback;
+			std::vector<EventCondition*>			Conditions;
 
 		public :
 
-			unsigned int	Type;
-			unsigned int	EmitterID;
+			void	Check();
+			bool	Call(std::vector<int> states);
 
-		protected :
+			Event(std::vector<EventCondition*> c, VALUE cb);
+			~Event();
 
-			AEvent(unsigned int, unsigned int);
-			virtual ~AEvent();
 	};
 
-	class EventData {
+	class ASystem;
+	extern std::map<unsigned int,ASystem*> Systems;
 
-		protected :
-
-			EventData();
-			virtual ~EventData();
-	};
-
-	template<class T>
-		class BaseEvent : public AEvent {
-
-			public :
-
-				BaseEvent(unsigned int type, unsigned int emitterID)
-					: AEvent(type, emitterID)
-				{
-					EventData* d = dynamic_cast<EventData*>(&Data);
-					assert(d != NULL);
-					d = NULL;
-				}
-
-				~BaseEvent() {}
-
-				T Data;
-		};
 }
 
 #endif

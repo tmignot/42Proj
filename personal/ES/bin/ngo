@@ -1,0 +1,39 @@
+#!/usr/local/bin/ruby
+
+require 'pry'
+require File.expand_path("../../lib/#{RUBY_PLATFORM}/ng.so", __FILE__)
+include Ng
+
+puts "== START =="
+
+@core = Core.new
+@position_system = PositionSystem.new
+@controller_system = ControllerSystem.new(core);
+@collision_system = CollisionSystem.new(@position_system)
+@player = Entity.new
+@mojotree = Entity.new
+
+
+event = @core.create_event(
+	#states to check
+	[
+		#player key 0
+		[controller_system, player[:key_0]],
+		#the collision state between player view and the tree
+		[collider_system, player[:forward_ray], mojotree[:bbox]]
+	],
+	#take this all when a state changed
+	lambda do |states|
+		#check whether they are not 0
+		if states[0] and states[1]
+			#so the player pressed key 0 in front of the tree
+			#let's quit
+			running = false;
+		else
+			#conditions not complete let's see later
+			true
+		end
+	end
+)
+
+puts "== END =="

@@ -1,0 +1,22 @@
+#!/usr/local/bin/ruby
+
+require_relative 'project.rb'
+require_relative 'wrapper.rb'
+
+def usage(bad_opt)
+	puts "unrecognized option #{bad_opt}"
+	puts "usage : ngeerate project|help"
+	puts "options:"
+	puts "	project - Generate a new project"
+	puts "	help - Print this help"
+	puts "(hint: try ngeerate <option> help for more info)"
+	exit
+end
+
+case arg = ARGV.shift
+	when "project"
+		then Project.create ARGV.shift
+	when "wrapper"
+		then Wrapper.create ARGV.shift
+	else usage arg
+end

@@ -1,0 +1,23 @@
+@player = Ng::Entity.new
+@player.add_components {
+	kbd:				Controller::Keyboard,
+	front_ray:	Collider::Ray,
+	mesh:				Graphic::AnimatedMesh
+}
+
+@mojo_tree = Ng::Entity.new
+@mojo_tree.add_components {
+	mesh:				Graphic::StaticMesh,
+	collider:		Collider::Cylinder,
+}
+
+Ng::Event.new [
+		[ @controller, @player[:kdb], Controller::A ],
+		[ @collider, @mojo_tree[:collider], @player[:front_ray] ]
+	],
+	lambda do |key, collision|
+		if key and collision
+			@dialog.start :mojo_vs_player_act1
+		end
+		return true
+	end
