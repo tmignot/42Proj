@@ -22,6 +22,8 @@ main_src=chars.c \
 	statehandler.c \
 	statehandler_general.c \
 	statehandler_general_part1.c \
+	statehandler_filename.c \
+	statehandler_filename_part1.c \
 	state_list.c \
 	state_machine.c \
 	token_list.c

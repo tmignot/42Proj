@@ -32,12 +32,12 @@ RVAL		handleStateGeneral_shebang(size_t pos)
 	return(ROK);
 }
 
-RVAL		handleStateGeneral_lchevron(size_t pos)
+RVAL		handleStateGeneral_lChevron(size_t pos)
 {
 	return(addState(STATE_LSCHEV, pos));
 }
 
-RVAL		handleStateGeneral_rchevron(size_t pos)
+RVAL		handleStateGeneral_rChevron(size_t pos)
 {
 	return(addState(STATE_RSCHEV, pos));
 }
@@ -103,18 +103,22 @@ RVAL		handleStateGeneral_closedBrac(size_t pos)
 
 RVAL		handleStateGeneral_wildcard(size_t pos)
 {
+	return(addState(STATE_FILENAME, pos));
 }
 
 RVAL		handleStateGeneral_quote(size_t pos)
 {
+	return(addState(STATE_SSTRING, pos));
 }
 
 RVAL		handleStateGeneral_dQuote(size_t pos)
 {
+	return(addState(STATE_DSTRING, pos));
 }
 
 RVAL		handleStateGeneral_bQuote(size_t pos)
 {
+	return(addState(STATE_SUBCMD, pos));
 }
 
 RVAL		handleStateGeneral_space(size_t pos)
@@ -155,6 +159,7 @@ RVAL		handleStateGeneral_colon(size_t pos)
 
 RVAL		handleStateGeneral_dollar(size_t pos)
 {
+	return(addState(STATE_FILENAME, pos));
 }
 
 RVAL		handleStateGeneral_endOfFile(size_t pos)
